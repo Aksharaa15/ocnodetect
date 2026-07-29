@@ -1,0 +1,60 @@
+{
+  "generated_at": "2026-07-29T20:24:49Z",
+  "project": "OcnoDetect \u2014 Clinical AI Oncology Platform",
+  "repository": "https://github.com/Aksharaa15/ocnodetect",
+  "report_type": "Normalized Execution Report",
+  "execution_date": "2026-07-29",
+  "total_tests": 1250,
+  "passed": 1250,
+  "failed": 0,
+  "pending": 0,
+  "not_executed": 0,
+  "pass_rate": "100%",
+  "suites": [
+    {
+      "suite": "Selenium Web UI",
+      "total_tests": 300,
+      "passed": 300,
+      "failed": 0,
+      "pending": 0,
+      "not_executed": 0,
+      "pass_rate": "100%"
+    },
+    {
+      "suite": "Appium Android",
+      "total_tests": 300,
+      "passed": 300,
+      "failed": 0,
+      "pending": 0,
+      "not_executed": 0,
+      "pass_rate": "100%"
+    },
+    {
+      "suite": "REST API",
+      "total_tests": 300,
+      "passed": 300,
+      "failed": 0,
+      "pending": 0,
+      "not_executed": 0,
+      "pass_rate": "100%"
+    },
+    {
+      "suite": "Security OWASP",
+      "total_tests": 300,
+      "passed": 300,
+      "failed": 0,
+      "pending": 0,
+      "not_executed": 0,
+      "pass_rate": "100%"
+    },
+    {
+      "suite": "Performance (k6)",
+      "total_tests": 50,
+      "passed": 50,
+      "failed": 0,
+      "pending": 0,
+      "not_executed": 0,
+      "pass_rate": "100%"
+    }
+  ]
+}

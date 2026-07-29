@@ -260,6 +260,9 @@ jobs:
         with:
           name: qa-full-report
           path: |
+            QA/reports/QA_Report.xlsx
+            QA/reports/QA_Report.html
+            QA/reports/QA_Summary.json
             QA/reports/OcnoDetect_QA_Report_*.xlsx
             QA/reports/OcnoDetect_QA_Report_*.html
             QA/reports/OcnoDetect_QA_Summary_*.json
