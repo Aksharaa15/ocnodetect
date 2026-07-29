@@ -1,0 +1,39 @@
+{
+  "metrics": {
+    "http_req_duration": {
+      "avg": 0.0,
+      "p(95)": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "http_reqs": {
+      "count": 20,
+      "rate": 2.45
+    },
+    "http_req_failed": {
+      "passes": 20,
+      "fails": 0,
+      "value": 1.0
+    },
+    "vus": {
+      "value": 5,
+      "min": 1,
+      "max": 5
+    }
+  },
+  "root_group": {
+    "name": "chat",
+    "path": "",
+    "id": "root",
+    "groups": [],
+    "checks": [
+      {
+        "name": "is status 200",
+        "path": "::is status 200",
+        "id": "check_status_200",
+        "passes": 0,
+        "fails": 20
+      }
+    ]
+  }
+}

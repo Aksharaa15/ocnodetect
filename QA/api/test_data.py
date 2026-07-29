@@ -9,7 +9,7 @@ from datetime import datetime
 
 # ─── API Configuration ────────────────────────────────────────────────────────
 
-BASE_URL = os.environ.get("OCNODETECT_API_URL", "https://ocnodetect-backend.onrender.com")
+BASE_URL = os.environ.get("OCNODETECT_API_URL", "http://127.0.0.1:5000")
 WEB_URL  = os.environ.get("OCNODETECT_WEB_URL",  "https://ocnodetect.vercel.app")
 
 # ─── Valid Clinician Credentials ──────────────────────────────────────────────

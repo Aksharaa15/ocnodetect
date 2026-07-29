@@ -9,7 +9,7 @@ from datetime import datetime
 
 # ─── API Configuration ────────────────────────────────────────────────────────
 
-BASE_URL = os.environ.get("OCNODETECT_API_URL", "https://ocnodetect-backend.onrender.com")
+BASE_URL = os.environ.get("OCNODETECT_API_URL", "http://127.0.0.1:5000")
 WEB_URL  = os.environ.get("OCNODETECT_WEB_URL",  "https://ocnodetect.vercel.app")
 
 # ─── Valid Clinician Credentials ──────────────────────────────────────────────
@@ -231,9 +231,9 @@ def registration_payload(
 ) -> dict:
     """Build a valid registration payload with optional overrides."""
     return {
-        "name":        name        or VALID_USER["name"],
-        "email":       email       or unique_email(),
-        "password":    password    or VALID_USER["password"],
-        "specialty":   specialty   or VALID_USER["specialty"],
-        "institution": institution or VALID_USER["institution"],
+        "name":        VALID_USER["name"] if name is None else name,
+        "email":       unique_email() if email is None else email,
+        "password":    VALID_USER["password"] if password is None else password,
+        "specialty":   VALID_USER["specialty"] if specialty is None else specialty,
+        "institution": VALID_USER["institution"] if institution is None else institution,
     }
