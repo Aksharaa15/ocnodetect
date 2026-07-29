@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-07-29_19-10-45",
+  "project": "OcnoDetect \u2014 Clinical AI Oncology Platform",
+  "suites": [
+    {
+      "name": "Selenium Web",
+      "total": 300,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "pending": 300,
+      "pass_rate": "0.0%"
+    },
+    {
+      "name": "Appium Android",
+      "total": 300,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "pending": 300,
+      "pass_rate": "0.0%"
+    },
+    {
+      "name": "API Tests",
+      "total": 300,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "pending": 300,
+      "pass_rate": "0.0%"
+    },
+    {
+      "name": "Security OWASP",
+      "total": 300,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "pending": 300,
+      "pass_rate": "0.0%"
+    },
+    {
+      "name": "Load k6",
+      "total": 50,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "pending": 50,
+      "pass_rate": "0.0%"
+    }
+  ],
+  "grand_total": 1250,
+  "grand_passed": 0,
+  "grand_failed": 0,
+  "grand_pending": 1250
+}

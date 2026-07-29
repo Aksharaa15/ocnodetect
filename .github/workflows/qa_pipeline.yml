@@ -1,0 +1,322 @@
+name: OcnoDetect QA Automation Pipeline
+
+on:
+  push:
+    branches: [ main, develop, feature/*, release/* ]
+    paths:
+      - 'QA/**'
+      - '.github/workflows/qa_pipeline.yml'
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Nightly full regression run at 01:00 UTC
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: 'Test suite to run (all / selenium / api / security / load)'
+        required: false
+        default: 'all'
+
+env:
+  OCNODETECT_API_URL:  ${{ secrets.OCNODETECT_API_URL }}
+  OCNODETECT_WEB_URL:  ${{ secrets.OCNODETECT_WEB_URL }}
+  JWT_TOKEN:           ${{ secrets.QA_JWT_TOKEN }}
+  PYTHON_VERSION:      '3.11'
+  NODE_VERSION:        '20'
+
+jobs:
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 1 — Selenium Web UI Tests
+  # ────────────────────────────────────────────────────────────────────────────
+  selenium:
+    name: Selenium Web UI Tests (300)
+    runs-on: ubuntu-latest
+    if: github.event.inputs.suite == 'all' || github.event.inputs.suite == 'selenium' || github.event.inputs.suite == ''
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-selenium-${{ hashFiles('QA/selenium/requirements.txt') }}
+
+      - name: Install Selenium dependencies
+        run: pip install -r QA/selenium/requirements.txt
+
+      - name: Install Chrome and ChromeDriver
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Run Selenium Tests
+        working-directory: QA/selenium
+        run: |
+          pytest tests/ \
+            --html=../../QA/reports/selenium_report.html \
+            --self-contained-html \
+            --tb=short \
+            --timeout=30 \
+            -q \
+            --ignore=tests/__pycache__
+        continue-on-error: true
+        env:
+          OCNODETECT_WEB_URL: ${{ env.OCNODETECT_WEB_URL }}
+
+      - name: Upload Selenium Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: selenium-html-report
+          path: QA/reports/selenium_report.html
+          retention-days: 30
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 2 — REST API Tests
+  # ────────────────────────────────────────────────────────────────────────────
+  api:
+    name: REST API Tests (300)
+    runs-on: ubuntu-latest
+    if: github.event.inputs.suite == 'all' || github.event.inputs.suite == 'api' || github.event.inputs.suite == ''
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-api-${{ hashFiles('QA/api/requirements.txt') }}
+
+      - name: Install API test dependencies
+        run: pip install -r QA/api/requirements.txt
+
+      - name: Copy test_data to api directory
+        run: cp QA/utils/test_data.py QA/api/test_data.py
+
+      - name: Run API Tests
+        working-directory: QA/api
+        run: |
+          pytest tests/ \
+            --html=../../QA/reports/api_report.html \
+            --self-contained-html \
+            --tb=short \
+            --timeout=30 \
+            -q
+        continue-on-error: true
+        env:
+          OCNODETECT_API_URL: ${{ env.OCNODETECT_API_URL }}
+
+      - name: Upload API Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: api-html-report
+          path: QA/reports/api_report.html
+          retention-days: 30
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 3 — Security Tests
+  # ────────────────────────────────────────────────────────────────────────────
+  security:
+    name: OWASP Security Tests (300)
+    runs-on: ubuntu-latest
+    if: github.event.inputs.suite == 'all' || github.event.inputs.suite == 'security' || github.event.inputs.suite == ''
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-security-${{ hashFiles('QA/security/requirements.txt') }}
+
+      - name: Install Security test dependencies
+        run: pip install -r QA/security/requirements.txt
+
+      - name: Copy test_data to security directory
+        run: cp QA/utils/test_data.py QA/security/test_data.py
+
+      - name: Run Security Tests
+        working-directory: QA/security
+        run: |
+          pytest tests/ \
+            --html=../../QA/reports/security_report.html \
+            --self-contained-html \
+            --tb=short \
+            --timeout=30 \
+            -q
+        continue-on-error: true
+        env:
+          OCNODETECT_API_URL: ${{ env.OCNODETECT_API_URL }}
+
+      - name: Upload Security Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-html-report
+          path: QA/reports/security_report.html
+          retention-days: 30
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 4 — Load Tests (k6)
+  # ────────────────────────────────────────────────────────────────────────────
+  load:
+    name: k6 Performance Tests
+    runs-on: ubuntu-latest
+    if: github.event.inputs.suite == 'all' || github.event.inputs.suite == 'load' || github.event_name == 'schedule'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          curl https://github.com/grafana/k6/releases/download/v0.49.0/k6-v0.49.0-linux-amd64.tar.gz -L | tar xvz --strip-components 1
+          sudo mv k6 /usr/bin/k6
+
+      - name: Run k6 Baseline Auth Load Test
+        run: |
+          k6 run QA/load/k6/baseline_auth.js \
+            --out json=QA/reports/k6_auth.json
+        continue-on-error: true
+        env:
+          OCNODETECT_API_URL: ${{ env.OCNODETECT_API_URL }}
+
+      - name: Run k6 Dashboard Load Test
+        run: |
+          k6 run QA/load/k6/load_dashboard.js \
+            --out json=QA/reports/k6_dashboard.json
+        continue-on-error: true
+        env:
+          OCNODETECT_API_URL: ${{ env.OCNODETECT_API_URL }}
+          JWT_TOKEN: ${{ env.JWT_TOKEN }}
+
+      - name: Run k6 Spike Chat Test
+        run: |
+          k6 run QA/load/k6/spike_chat.js \
+            --out json=QA/reports/k6_chat.json
+        continue-on-error: true
+        env:
+          OCNODETECT_API_URL: ${{ env.OCNODETECT_API_URL }}
+          JWT_TOKEN: ${{ env.JWT_TOKEN }}
+
+      - name: Upload k6 Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k6-load-results
+          path: QA/reports/k6_*.json
+          retention-days: 30
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 5 — Generate QA Reports (runs after all suites)
+  # ────────────────────────────────────────────────────────────────────────────
+  generate-reports:
+    name: Generate QA Reports (Excel + HTML)
+    runs-on: ubuntu-latest
+    needs: [ selenium, api, security ]
+    if: always()
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install report dependencies
+        run: pip install openpyxl
+
+      - name: Download all test artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: QA/reports/artifacts/
+
+      - name: Generate OcnoDetect QA Report
+        run: python QA/reports/generate_report.py
+
+      - name: Upload Final QA Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qa-full-report
+          path: |
+            QA/reports/OcnoDetect_QA_Report_*.xlsx
+            QA/reports/OcnoDetect_QA_Report_*.html
+            QA/reports/OcnoDetect_QA_Summary_*.json
+          retention-days: 90
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 6 — Appium Mobile Tests (runs on schedule or manual trigger)
+  # ────────────────────────────────────────────────────────────────────────────
+  appium:
+    name: Appium Android Mobile Tests (300)
+    runs-on: ubuntu-latest
+    if: github.event.inputs.suite == 'appium' || github.event_name == 'schedule'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Appium dependencies
+        run: pip install -r QA/appium/requirements.txt
+
+      - name: Install Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Appium server
+        run: |
+          npm install -g appium@2
+          appium driver install uiautomator2
+
+      - name: Enable Android emulator (API 33)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          arch: x86_64
+          profile: Pixel_5
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            appium &
+            sleep 5
+            cd QA/appium && pytest tests/ \
+              --html=../../QA/reports/appium_report.html \
+              --self-contained-html \
+              --tb=short \
+              --timeout=60 \
+              -q
+        continue-on-error: true
+
+      - name: Upload Appium Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: appium-html-report
+          path: QA/reports/appium_report.html
+          retention-days: 30

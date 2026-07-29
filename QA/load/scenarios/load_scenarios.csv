@@ -1,0 +1,51 @@
+Scenario ID,Category,Type,Concurrent Users,Target Component,Scenario Description
+OCN-LD-001,Baseline,Smoke,1,Auth API,1 user logs in with valid credentials
+OCN-LD-002,Baseline,Smoke,5,Auth API,5 users attempt concurrent login
+OCN-LD-003,Baseline,Smoke,10,Auth API,10 users register new accounts simultaneously
+OCN-LD-004,Baseline,Smoke,1,Dashboard API,1 user retrieves dashboard stats
+OCN-LD-005,Baseline,Smoke,5,Dashboard API,5 users refresh dashboard concurrently
+OCN-LD-006,Baseline,Smoke,10,Dashboard API,10 users load dashboard recent cases
+OCN-LD-007,Baseline,Smoke,1,Upload API,1 user submits pathology report PDF
+OCN-LD-008,Baseline,Smoke,5,Upload API,5 users upload CT scan metadata simultaneously
+OCN-LD-009,Baseline,Smoke,1,Chat API,1 user submits AI clinical chat query
+OCN-LD-010,Baseline,Smoke,5,Chat API,5 users conduct multi-turn chat sessions
+OCN-LD-011,Load,Normal,50,Auth API,50 users login simultaneously during shift change
+OCN-LD-012,Load,Normal,100,Auth API,100 clinicians authenticate within 1 minute
+OCN-LD-013,Load,Normal,150,Auth API,150 registration attempts during grand rounds onboarding
+OCN-LD-014,Load,Normal,50,Dashboard API,50 active users request dashboard updates
+OCN-LD-015,Load,Normal,100,Dashboard API,100 users poll dashboard stats concurrently
+OCN-LD-016,Load,Normal,200,Dashboard API,200 users view patient case insights simultaneously
+OCN-LD-017,Load,Normal,50,Upload API,50 users upload tooth scans and pathology reports
+OCN-LD-018,Load,Normal,100,Upload API,100 concurrent CT scan uploads to Gemini Vision API
+OCN-LD-019,Load,Normal,150,Upload API,150 pathology report PDF parsing requests
+OCN-LD-020,Load,Normal,50,Chat API,50 concurrent AI chat sessions on Llama-3.3
+OCN-LD-021,Load,Normal,100,Chat API,100 surgeons asking treatment protocol questions
+OCN-LD-022,Load,Normal,150,Chat API,150 multi-turn clinical decision queries
+OCN-LD-023,Load,Normal,50,Reference API,50 concurrent reference generation requests
+OCN-LD-024,Load,Normal,100,Reference API,100 PubMed literature searches
+OCN-LD-025,Load,Normal,150,Reference API,150 cache lookups for NCCN guidelines
+OCN-LD-026,Stress,High,200,Auth API,200 concurrent login attempts testing authLimiter
+OCN-LD-027,Stress,High,300,Auth API,300 password reset OTP requests hitting Gmail REST API
+OCN-LD-028,Stress,High,400,Auth API,400 simultaneous registration attempts
+OCN-LD-029,Stress,High,500,Dashboard API,500 concurrent dashboard refreshes
+OCN-LD-030,Stress,High,600,Dashboard API,600 users querying patient distribution charts
+OCN-LD-031,Stress,High,250,Upload API,250 concurrent scan uploads testing 10MB memory limits
+OCN-LD-032,Stress,High,350,Upload API,350 simultaneous pathology report AI analyses
+OCN-LD-033,Stress,High,500,Upload API,500 users upload scans testing rate limiters (15 RPM / 500 RPD)
+OCN-LD-034,Stress,High,250,Chat API,250 concurrent LLM queries pushing Groq API limits
+OCN-LD-035,Stress,High,400,Chat API,400 active chat threads during oncology conference
+OCN-LD-036,Spike,Flash,500,Auth API,Spike test: 500 users login within 5 seconds
+OCN-LD-037,Spike,Flash,750,Auth API,Spike test: 750 OTP verification requests
+OCN-LD-038,Spike,Flash,1000,Dashboard API,Spike test: 1000 users refresh dashboard simultaneously
+OCN-LD-039,Spike,Flash,500,Upload API,Spike test: 500 scan uploads submitted at once
+OCN-LD-040,Spike,Flash,300,Chat API,Spike test: 300 AI queries fired in 1 second
+OCN-LD-041,Soak,Endurance,30,Auth API,30 VUs login repeatedly over 2-hour soak test
+OCN-LD-042,Soak,Endurance,50,Dashboard API,50 VUs poll dashboard over 4-hour soak test
+OCN-LD-043,Soak,Endurance,20,Upload API,20 VUs upload scans continuously over 1-hour soak test
+OCN-LD-044,Soak,Endurance,30,Chat API,30 VUs execute continuous chat queries over 3 hours
+OCN-LD-045,Soak,Endurance,40,Reference API,40 VUs fetch references over 6-hour soak test
+OCN-LD-046,Recovery,Fault,50,Database,50 VUs active while MongoDB cluster restarts
+OCN-LD-047,Recovery,Fault,100,Database,100 VUs active during primary replica failover
+OCN-LD-048,Recovery,Fault,50,Backend API,50 VUs active while Express server reboots
+OCN-LD-049,Recovery,Fault,100,AI Gateway,100 VUs active when Groq API recovers from outage
+OCN-LD-050,Recovery,Fault,150,API Gateway,150 VUs active during network partition recovery
