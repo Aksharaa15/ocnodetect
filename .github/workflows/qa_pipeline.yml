@@ -1,4 +1,3 @@
-# OcnoDetect QA Automation Pipeline
 name: OcnoDetect QA Automation
 
 on:
@@ -167,7 +166,11 @@ jobs:
         if: always()
         with:
           name: performance-test-report
-          path: QA/reports/k6_*.json
+          path: |
+            QA/reports/Load_Test_Report.xlsx
+            QA/reports/Load_Test_Report.html
+            QA/reports/Load_Test_Summary.json
+            QA/reports/k6_*.json
           retention-days: 30
 
   # ────────────────────────────────────────────────────────────────────────────

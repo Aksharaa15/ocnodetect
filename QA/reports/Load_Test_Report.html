@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OcnoDetect — 300 VU Baseline Load Test Report</title>
+  <style>
+    :root {
+      --bg-dark: #0B132B;
+      --bg-card: #1C2541;
+      --bg-accent: #1C2B4A;
+      --teal: #00C2CC;
+      --green: #10B981;
+      --text-main: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --border: #374151;
+    }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      margin: 0;
+      padding: 32px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .header {
+      background: linear-gradient(135deg, #0D1B2A 0%, #1C2541 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    .header h1 {
+      margin: 0 0 8px 0;
+      color: var(--teal);
+      font-size: 26px;
+      font-weight: 700;
+    }
+    .header p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .card-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .card-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+    .card-value.highlight {
+      color: var(--teal);
+    }
+    .card-value.pass {
+      color: var(--green);
+    }
+    .table-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .table-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--teal);
+      margin-top: 0;
+      margin-bottom: 18px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background-color: var(--bg-accent);
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    td.value {
+      font-weight: 700;
+      color: #FFFFFF;
+      text-align: right;
+    }
+    th.value-hdr {
+      text-align: right;
+    }
+    tr:hover {
+      background-color: rgba(0, 194, 204, 0.05);
+    }
+    .footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>OcnoDetect Clinical AI — 300 VU Baseline Load Test Report</h1>
+      <p>Continuous Execution Duration: 1 minute | Run Date: 2026-07-30 10:08:22 | Target Endpoint: http://127.0.0.1:5000</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">Virtual Users</div>
+        <div class="card-value highlight">300 VUs</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Total Requests</div>
+        <div class="card-value">47,166</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Requests / Sec (RPS)</div>
+        <div class="card-value highlight">762.84</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Avg Response Time</div>
+        <div class="card-value">370.05 ms</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Success Rate</div>
+        <div class="card-value pass">90.97%</div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <h2 class="table-title">Performance Summary Metrics</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="value-hdr">Value</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Virtual Users</td>
+            <td class="value">300</td>
+            <td>Number of concurrent users</td>
+          </tr>
+          <tr>
+            <td>Test Duration</td>
+            <td class="value">1 minute</td>
+            <td>Total execution duration</td>
+          </tr>
+          <tr>
+            <td>Total Requests</td>
+            <td class="value">47,166</td>
+            <td>Requests processed</td>
+          </tr>
+          <tr>
+            <td>Requests Per Second (RPS)</td>
+            <td class="value">762.84 req/s</td>
+            <td>Requests handled every second</td>
+          </tr>
+          <tr>
+            <td>Fastest Response Time</td>
+            <td class="value">0.99 ms</td>
+            <td>Fastest response received</td>
+          </tr>
+          <tr>
+            <td>Average Response Time</td>
+            <td class="value">370.05 ms</td>
+            <td>Average response time</td>
+          </tr>
+          <tr>
+            <td>Slowest Response Time</td>
+            <td class="value">2081.80 ms</td>
+            <td>Slowest response received</td>
+          </tr>
+          <tr>
+            <td>90th Percentile Response Time</td>
+            <td class="value">2025.61 ms</td>
+            <td>90% of requests completed faster than this</td>
+          </tr>
+          <tr>
+            <td>95th Percentile Response Time</td>
+            <td class="value">2036.66 ms</td>
+            <td>95% of requests completed faster than this</td>
+          </tr>
+          <tr>
+            <td>Success Rate</td>
+            <td class="value" style="color: var(--green);">90.97%</td>
+            <td>Percentage of successful requests</td>
+          </tr>
+          <tr>
+            <td>Error Rate</td>
+            <td class="value">9.03%</td>
+            <td>Percentage of failed requests</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      OcnoDetect QA Performance Automation Suite v3.0 | Generated automatically on 2026-07-30 10:08:22
+    </div>
+  </div>
+</body>
+</html>

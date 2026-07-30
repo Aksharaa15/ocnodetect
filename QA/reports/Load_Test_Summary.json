@@ -1,0 +1,18 @@
+{
+  "virtual_users": 300,
+  "test_duration_sec": 61.83,
+  "test_duration_formatted": "1 minute",
+  "total_requests": 47166,
+  "requests_per_second": 762.84,
+  "min_response_time_ms": 0.99,
+  "avg_response_time_ms": 370.05,
+  "max_response_time_ms": 2081.8,
+  "p90_response_time_ms": 2025.61,
+  "p95_response_time_ms": 2036.66,
+  "success_rate_pct": 90.97,
+  "error_rate_pct": 9.03,
+  "throughput_kbps": 39.37,
+  "success_count": 42907,
+  "error_count": 4259,
+  "run_timestamp": "2026-07-30 10:08:22"
+}
