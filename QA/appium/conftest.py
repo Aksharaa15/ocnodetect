@@ -60,6 +60,27 @@ class MockAppiumDriver:
     def __init__(self):
         self.current_activity = ".MainActivity"
         self.capabilities = {"platformName": "Android", "appPackage": "com.scanwise.ocnodetect"}
+        self.page_source = """<?xml version="1.0" encoding="UTF-8"?>
+<hierarchy rotation="0">
+  <android.widget.FrameLayout resource-id="android:id/content" package="com.scanwise.ocnodetect">
+    <android.view.ViewGroup content-desc="OcnoDetect Auth Screen">
+      <android.widget.TextView text="OcnoDetect" resource-id="com.scanwise.ocnodetect:id/app_title"
+          content-desc="OcnoDetect Clinical AI Platform" />
+      <android.widget.TextView text="Detect cancer staging with AI" />
+      <android.widget.EditText resource-id="com.scanwise.ocnodetect:id/email_input"
+          text="" hint="Enter clinical email" content-desc="Email input field"
+          class="android.widget.EditText" />
+      <android.widget.EditText resource-id="com.scanwise.ocnodetect:id/password_input"
+          text="" hint="Password" content-desc="Password input field" password="true"
+          class="android.widget.EditText" />
+      <android.widget.Button resource-id="com.scanwise.ocnodetect:id/sign_in_button"
+          text="Sign In" content-desc="Sign In button" class="android.widget.Button" />
+      <android.widget.Button resource-id="com.scanwise.ocnodetect:id/create_account_button"
+          text="Create Account" content-desc="Create Account button" />
+      <android.widget.TextView text="Forgot Password?" resource-id="com.scanwise.ocnodetect:id/forgot_password" />
+    </android.view.ViewGroup>
+  </android.widget.FrameLayout>
+</hierarchy>"""
 
     def find_element(self, by, value):
         return MockAppiumElement()
