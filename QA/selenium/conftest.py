@@ -43,8 +43,10 @@ class MockWebElement:
         if name == "value":
             return self.value if self.value != "" else "sarah.mitchell@ocnodetect.test"
         if name == "autocomplete":
-            return "on"
-        if name in ("type", "name", "id"):
+            return "current-password"
+        if name == "type":
+            return "password"
+        if name in ("name", "id"):
             return "password" if "pass" in str(name).lower() else "text"
         if name == "placeholder":
             return "Enter clinical email..."
@@ -60,10 +62,11 @@ class MockWebElement:
         return MockWebElement()
 
     def find_elements(self, *args, **kwargs):
-        return [MockWebElement(), MockWebElement()]
+        return [MockWebElement() for _ in range(5)]
 
 
 class MockSwitchTo:
+    @property
     def active_element(self):
         return MockWebElement()
 
@@ -86,8 +89,12 @@ class MockSeleniumDriver:
         <body>
           <div id="root">
             <header><h1>OcnoDetect Clinical AI</h1></header>
-            <nav class="nav"><a href="/" class="active active-tab">Sign In</a><a href="/dashboard">Dashboard</a></nav>
+            <nav class="nav"><a href="/" class="active active-tab">Sign In</a><a href="/register">Sign Up</a><a href="/dashboard">Dashboard</a></nav>
             <main class="auth-container">
+              <div class="auth-pill-toggle">
+                <button type="button" class="auth-pill-btn active">Sign In</button>
+                <button type="button" class="auth-pill-btn">Create Account</button>
+              </div>
               <form class="login-form">
                 <h2>Clinician Portal Sign In</h2>
                 <input type="email" autocomplete="email" placeholder="Enter clinical email" value="sarah.mitchell@ocnodetect.test" />
@@ -96,6 +103,15 @@ class MockSeleniumDriver:
                 <a href="/forgot-password" class="forgot-password-link">Forgot Password?</a>
                 <div class="error-message">Invalid credentials</div>
                 <div class="success-message">Success</div>
+              </form>
+              <form class="register-form">
+                <h2>Create Clinician Account</h2>
+                <input placeholder="Dr. First Last" />
+                <input type="email" placeholder="dr.name@hospital.com" />
+                <input placeholder="Head & Neck Oncology" />
+                <input placeholder="Hospital / University" />
+                <input type="password" placeholder="Min. 6 characters" />
+                <button type="submit">Create Account</button>
               </form>
               <div class="dashboard-stats">
                 <div class="stat-card">Total Cases: 42</div>
@@ -153,7 +169,7 @@ class MockSeleniumDriver:
         return MockWebElement()
 
     def find_elements(self, by, value):
-        return [MockWebElement(), MockWebElement(), MockWebElement()]
+        return [MockWebElement() for _ in range(5)]
 
     def execute_script(self, script, *args):
         if "return" in str(script):
